@@ -13,31 +13,33 @@ const FarmerListingPage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedFarmer, setSelectedFarmer] = useState(null);
 
-  useEffect(() => {
-    const fetchFarmers = async () => {
-      try {
-        const token = localStorage.getItem("token"); // Assuming you store JWT in localStorage
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/spoc/getAllFarmers`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  const fetchFarmers = async () => {
+    try {
+      const token = localStorage.getItem("token"); // Assuming you store JWT in localStorage
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/spoc/getAllFarmers`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        console.log(response.data.farmers);
-        
-        if (response.data.success) {
-          setFarmers(response.data.farmers);
-          calculateTotalParali(response.data.farmers); // Call to calculate total parali
-        } else {
-          setError("Failed to fetch farmers");
-        }
-      } catch (error) {
-        console.error(error);
-        setError("Error fetching farmers");
-      } finally {
-        setLoading(false);
+      console.log(response.data.farmers);
+      
+      if (response.data.success) {
+        setFarmers(response.data.farmers);
+        calculateTotalParali(response.data.farmers); // Call to calculate total parali
+      } else {
+        setError("Failed to fetch farmers");
       }
-    };
+    } catch (error) {
+      console.error(error);
+      setError("Error fetching farmers");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    
 
     fetchFarmers();
   }, []);
